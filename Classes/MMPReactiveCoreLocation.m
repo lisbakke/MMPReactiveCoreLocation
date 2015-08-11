@@ -143,7 +143,10 @@ typedef NS_ENUM(NSInteger, MMPLocationServiceType) {
 #endif
 
 - (CLLocationManager *)_setupManagerForLocation {
-    _manager.pausesLocationUpdatesAutomatically = _settings.pausesLocationUpdatesAutomatically;
+    if (_settings.pausesLocationUpdatesAutomatically == NO) {
+      // It defaults to yes. We only explicitly set it to NO because touching this property causes a crash on the Apple Watch.
+      _manager.pausesLocationUpdatesAutomatically = NO;
+    }
     _manager.distanceFilter = _settings.distanceFilter;
     _manager.desiredAccuracy = _settings.desiredAccuracy;
     _manager.activityType = _settings.activityType;
